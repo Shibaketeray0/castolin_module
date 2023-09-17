@@ -1,0 +1,133 @@
+<?php
+
+/**
+ * @file
+ * Hooks provided by the solutions_portal module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\Component\Utility\NestedArray;
+use Drupal\views\ViewExecutable;
+
+/**
+ * Implements hook_entity_view().
+ */
+function solutions_portal_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  $entity_type_manager = \Drupal::entityTypeManager();
+
+  if ($entity->bundle() == 'application' && $view_mode == 'full') {
+    $country_id = $entity->get('field_country')->getValue();
+    $node = $entity_type_manager->getStorage('node')
+      ->load($country_id[0]['target_id']);
+    $allowed_currencies = $node->get('field_currency')
+      ->getSettings()['allowed_values'];
+    $property = $node->get('field_currency')->getValue();
+
+    $prices_fields = [
+      'field_annual_customer_savings',
+      'field_eco_cs_annualoperatingcost',
+      'field_eco_fs_annualoperatingcost',
+      'field_cost_of_castolin',
+      'field_eco_cost_reduction',
+      'field_eco_cs_maintenancecost',
+      'field_eco_fs_maintenancecost',
+      'field_eco_cs_costassembly',
+      'field_eco_fs_costassembly',
+      'field_downtime_cost_per_day',
+      'field_eco_cs_newpartscost',
+      'field_eco_fs_newpartscost',
+      'field_eco_cs_newpartunitprice',
+      'field_eco_fs_newpartunitprice',
+      'field_price_per_new_part',
+      'field_eco_cs_totallifecost',
+      'field_eco_fs_totallifecost',
+      'field_eco_cs_unitcostassembly',
+      'field_eco_fs_unitcostassembly',
+      'field_eco_cs_unitcostoftreatment',
+      'field_eco_fs_unitcostoftreatment',
+    ];
+
+    foreach ($prices_fields as $price_field) {
+      if (NestedArray::getValue($build[$price_field], ['#title'])) {
+        $build[$price_field]['#title'] = substr($build[$price_field]['#title'], 0, -1) . " " . $allowed_currencies[$property[0]['value']] . ")";
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_leaflet_map_info().
+ */
+function solutions_portal_leaflet_map_info() {
+  return [
+    'OSM Mapnik' => [
+      'label' => 'OSM Mapnik',
+      'description' => t('Leaflet default map.'),
+      'settings' => [
+        'dragging' => TRUE,
+        'touchZoom' => TRUE,
+        'scrollWheelZoom' => TRUE,
+        'doubleClickZoom' => FALSE,
+        'zoomControl' => TRUE,
+        'zoomControlPosition' => 'topleft',
+        'attributionControl' => FALSE,
+        'trackResize' => TRUE,
+        'fadeAnimation' => TRUE,
+        'zoomAnimation' => TRUE,
+        'closePopupOnClick' => TRUE,
+      ],
+      'layers' => [
+        'earth' => [
+          'urlTemplate' => '',
+          'options' => [
+            'attribution' => '',
+          ],
+        ],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_views_data().
+ */
+function solutions_portal_views_data() {
+	$data = [];
+
+	$data['views']['drag_window'] = [
+		'title' => t('Draggable window taxonomy filter'),
+		'filter' => [
+			'title' => t('Draggable window taxonomy filter'),
+			'field' => 'id',
+			'id' => 'drag_window',
+		],
+	];
+
+	return $data;
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+
+function solutions_portal_views_pre_render(ViewExecutable $view) {
+	if ( isset( $view ) && ( $view->storage->id() == 'aaa' ) ) {
+		$view->element['#attached']['library'][] = 'solutions_portal/draggable_window';
+	}
+}
+
+/**
+ * Implements hook_theme().
+ */
+function solutions_portal_theme() {
+  return [
+    'entity-tree' => [
+      'template' => 'entity-tree',
+      'variables' => [
+        'terms' => NULL,
+        'field_id' => NULL,
+      ]
+    ],
+  ];
+}

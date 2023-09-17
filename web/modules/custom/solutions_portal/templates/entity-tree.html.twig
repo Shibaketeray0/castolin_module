@@ -1,0 +1,23 @@
+{% macro renderTerm(term) %}
+  <li>
+    {{ term.name }}
+    {% if term.children %}
+      <ul>
+        {% for child in term.children %}
+            {{ _self.renderTerm(child)|raw }}
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </li>
+{% endmacro %}
+
+
+<div id="{{ field_id ~ '_taxonomy_tree' }}">
+  <ul>
+    {% for terms_list in terms %}
+      {% for term in terms_list %}
+          {{ _self.renderTerm(term)|raw }}
+      {% endfor %}
+    {% endfor %}
+  </ul>
+</div>

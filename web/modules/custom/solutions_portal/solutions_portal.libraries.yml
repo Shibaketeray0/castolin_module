@@ -1,0 +1,32 @@
+application_formulas:
+  version: 1
+  js:
+    js/AppFormulas.js: {}
+
+synoptec_leaflet:
+  version: 1
+  css:
+    base:
+      https://unpkg.com/@geoman-io/leaflet-geoman-free@latest/dist/leaflet-geoman.css: {type: external}
+  js:
+    js/SynoptecLeaflet.js: {}
+    https://www.npmjs.com/package/@geoman-io/leaflet-geoman-free: {type: external}
+
+leaflet_view:
+  version: 1
+  js:
+    js/LeafletView.js: {}
+
+draggable_window:
+  version: 1
+  css:
+    base:
+      https://cdnjs.cloudflare.com/ajax/libs/jqwidgets/17.0.1/jqwidgets/styles/jqx.base.min.css: { type: external }
+      https://cdnjs.cloudflare.com/ajax/libs/jqwidgets/17.0.1/jqwidgets/styles/jqx.summer.min.css: { type: external }
+  js:
+    https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js: {type: external}
+    https://cdnjs.cloudflare.com/ajax/libs/jqwidgets/17.0.1/jqwidgets/jqxcore.min.js: {type: external}
+    https://cdnjs.cloudflare.com/ajax/libs/jqwidgets/17.0.1/jqwidgets/jqxwindow.min.js: {type: external}
+    https://cdnjs.cloudflare.com/ajax/libs/jqwidgets/17.0.1/jqwidgets/jqxtree.min.js: {type: external}
+    https://cdnjs.cloudflare.com/ajax/libs/jqwidgets/17.0.1/jqwidgets/jqxtreegrid.min.js: {type: external}
+    js/DraggableWindow.js: {}

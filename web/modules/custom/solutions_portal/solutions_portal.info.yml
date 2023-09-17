@@ -1,0 +1,5 @@
+name: 'Solutions Portal'
+type: module
+description: 'Adds some Custom functionality'
+package: Custom
+core_version_requirement: ^10
