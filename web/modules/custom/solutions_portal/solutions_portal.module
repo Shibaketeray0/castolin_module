@@ -93,29 +93,20 @@ function solutions_portal_leaflet_map_info() {
  * Implements hook_views_data().
  */
 function solutions_portal_views_data() {
-	$data = [];
+  $data = [];
 
-	$data['views']['drag_window'] = [
-		'title' => t('Draggable window taxonomy filter'),
-		'filter' => [
-			'title' => t('Draggable window taxonomy filter'),
-			'field' => 'id',
-			'id' => 'drag_window',
-		],
-	];
+  $data['views']['drag_window'] = [
+    'title' => t('Draggable window taxonomy filter'),
+    'filter' => [
+      'title' => t('Draggable window taxonomy filter'),
+      'field' => 'id',
+      'id' => 'drag_window',
+    ],
+  ];
 
-	return $data;
+  return $data;
 }
 
-/**
- * Implements hook_views_pre_render().
- */
-
-function solutions_portal_views_pre_render(ViewExecutable $view) {
-	if ( isset( $view ) && ( $view->storage->id() == 'aaa' ) ) {
-		$view->element['#attached']['library'][] = 'solutions_portal/draggable_window';
-	}
-}
 
 /**
  * Implements hook_theme().
@@ -125,7 +116,6 @@ function solutions_portal_theme() {
     'entity-tree' => [
       'template' => 'entity-tree',
       'variables' => [
-        'terms' => NULL,
         'field_id' => NULL,
       ]
     ],

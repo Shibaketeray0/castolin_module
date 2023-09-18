@@ -68,6 +68,7 @@ class SolutionsPortalBaseFormAlter extends FormAlterBase implements ContainerFac
    */
   public function formAlter(array &$form, FormStateInterface &$form_state, $form_id) {
     $form['#attached']['library'][] = 'solutions_portal/application_formulas';
+    $form['#attached']['library'][] = 'solutions_portal/draggable_window';
 
     $required_fields = [
       'field_advantages',
@@ -160,6 +161,7 @@ class SolutionsPortalBaseFormAlter extends FormAlterBase implements ContainerFac
       $form['field_co2reductionfactor']['widget'][0]['value']['#value'] = $basemetal_property_value;
     }
 
+
     $fields_to_use_for_weight = [
       'field_eco_fs_unitcostoftreatment',
       'field_eco_fs_unitcostassembly',
@@ -203,7 +205,7 @@ class SolutionsPortalBaseFormAlter extends FormAlterBase implements ContainerFac
     if ($application_type[0]['value'] == '2' || $application_type[0]['value'] == NULL) {
       $selected_value = $form_state->getValue('field_basemetal');
       $term = $this->entityTypeManager->getStorage('taxonomy_term')
-        ->load($selected_value[0]['target_id']);
+        ->load($selected_value['target_id']);
       $property_value = $term->get('field_property')->getValue();
       $response->addCommand(new InvokeCommand('#edit-field-co2reductionfactor-0-value', 'val', [$property_value[0]['value']]));
     }

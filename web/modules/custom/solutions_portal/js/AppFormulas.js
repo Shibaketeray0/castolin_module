@@ -29,10 +29,6 @@
     return str;
   };
 
-  // Added 'form-required' class to 'Processes' field to show asterisk after title
-  let title = getElement('edit-field-processes-wrapper').getElementsByTagName('h4');
-  title[0].classList.add('form-required');
-
   Drupal.behaviors.solutionsPortalSolutionsPortal = {
     attach(context, settings) {
       if (getElement('edit-field-is-terolink') === null || getValue('edit-field-is-terolink') === '2') {
